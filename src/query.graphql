@@ -1,0 +1,316 @@
+query Products(
+  $distinct: [ProductScalarFieldEnum!]
+  $skip: Int
+  $take: Int
+  $orderBy: [ProductOrderByWithRelationInput!]
+  $where: ProductWhereInput
+) {
+  products(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    orderBy: $orderBy
+    where: $where
+  ) {
+    category
+    createdAt
+    discount
+    id
+    name
+  }
+
+  productAggregate(ProductWhereInput: $where) {
+    count
+  }
+}
+
+query product($id: Int!) {
+  product: product(where: { id: $id }) {
+    category
+    createdAt
+    discount
+    id
+    name
+    oldPrice
+    outOfStock
+    price
+    rating
+    reviews
+    description
+    measurements
+    subCategory
+    tags
+    updatedAt
+    url
+    images
+    userProduct {
+      id
+      status
+    }
+  }
+}
+
+query SearchProducts(
+  $distinct: [ProductScalarFieldEnum!]
+  $skip: Int
+  $take: Int
+  $cursor: WhereUniqueInputNumber
+  $orderBy: [ProductOrderByWithRelationInput!]
+  $where: ProductWhereInput
+) {
+  products(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    where: $where
+    cursor: $cursor
+    orderBy: $orderBy
+  ) {
+    name
+    id
+    category
+    subCategory
+    outOfStock
+    price
+    images
+    rating
+    reviews
+    discount
+    oldPrice
+    userProduct {
+      id
+      status
+    }
+  }
+  productAggregate(ProductWhereInput: $where) {
+    count
+  }
+}
+
+query FilterProducts(
+  $distinct: [ProductScalarFieldEnum!]
+  $skip: Int
+  $take: Int
+  $cursor: WhereUniqueInputNumber
+  $orderBy: [ProductOrderByWithRelationInput!]
+  $where: ProductWhereInput
+) {
+  productAggregate(ProductWhereInput: $where) {
+    count
+  }
+  products(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    where: $where
+    cursor: $cursor
+    orderBy: $orderBy
+  ) {
+    name
+    id
+    category
+    subCategory
+    outOfStock
+    price
+    images
+    rating
+    reviews
+    discount
+    oldPrice
+  }
+}
+
+query myUserProducts(
+  $skip: Int
+  $take: Int
+  $distinct: [UserProductScalarFieldEnum!]
+  $orderBy: [UserProductOrderByWithRelationInput!]
+  $where: UserProductWhereInput
+) {
+  myUserProducts(
+    skip: $skip
+    take: $take
+    distinct: $distinct
+    orderBy: $orderBy
+    where: $where
+  ) {
+    createdAt
+    id
+    pid
+    uid
+    updatedAt
+    status
+    product {
+      name
+      price
+      oldPrice
+      images
+      outOfStock
+      category
+      subCategory
+      rating
+      reviews
+    }
+  }
+}
+
+query myOrders(
+  $distinct: [OrderScalarFieldEnum!]
+  $skip: Int
+  $take: Int
+  $cursor: WhereUniqueInputNumber
+  $orderBy: [OrderOrderByWithRelationInput!]
+  $where: OrderWhereInput
+) {
+  myOrders(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+  ) {
+    id
+    pid
+    product {
+      images
+      name
+    }
+    updatedAt
+  }
+  orderAggregate(OrderWhereInput: $where) {
+    count
+  }
+}
+
+query myViews(
+  $skip: Int
+  $take: Int
+  $orderBy: [ViewOrderByWithRelationInput!]
+  $distinct: [ViewScalarFieldEnum!]
+  $where: ViewWhereInput
+) {
+  myViews(
+    skip: $skip
+    take: $take
+    orderBy: $orderBy
+    distinct: $distinct
+    where: $where
+  ) {
+    id
+    pid
+    product {
+      images
+      name
+      price
+      oldPrice
+    }
+  }
+}
+
+query Supports(
+  $distinct: [SupportScalarFieldEnum!]
+  $skip: Int
+  $take: Int
+  $cursor: WhereUniqueInputNumber
+  $orderBy: [SupportOrderByWithRelationInput!]
+  $where: SupportWhereInput
+) {
+  supports(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+  ) {
+    category
+    message
+    id
+    updatedAt
+  }
+  supportAggregate(SupportWhereInput: $where) {
+    count
+  }
+}
+
+query MySupports(
+  $skip: Int
+  $take: Int
+  $orderBy: [SupportOrderByWithRelationInput!]
+  $where: SupportWhereInput
+) {
+  mySupports(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    category
+    message
+    id
+    updatedAt
+  }
+  supportAggregate(SupportWhereInput: $where) {
+    count
+  }
+}
+
+mutation InsertUserProductsOne(
+  $createUserProductInput: CreateUserProductInput!
+) {
+  createUserProduct(createUserProductInput: $createUserProductInput) {
+    createdAt
+    id
+    pid
+    status
+    uid
+    updatedAt
+  }
+}
+
+mutation InsertProductView($uid: String!, $pid: Int!) {
+  createView(createViewInput: { pid: $pid, uid: $uid }) {
+    pid
+    uid
+    createdAt
+    updatedAt
+    id
+  }
+}
+
+mutation PostNewProduct($createProductInput: CreateProductInput!) {
+  createProduct(createProductInput: $createProductInput) {
+    category
+    createdAt
+    id
+    discount
+    images
+    name
+    price
+    oldPrice
+    description
+  }
+}
+
+mutation InsertSupport($createSupportInput: CreateSupportInput!) {
+  createSupport(createSupportInput: $createSupportInput) {
+    updatedAt
+    uid
+    location
+    message
+    id
+    createdAt
+    category
+  }
+}
+
+query whoami {
+  whoami {
+    uid
+    seller {
+      uid
+    }
+  }
+}
+
+mutation createSeller($createSellerInput: CreateSellerInput!) {
+  createSeller(createSellerInput: $createSellerInput) {
+    uid
+  }
+}
